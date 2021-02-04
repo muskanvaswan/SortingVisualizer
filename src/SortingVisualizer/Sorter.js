@@ -26,14 +26,14 @@ export default class Sorter extends React.Component{
           </div>)
           })}
         </div>
-        <div className="fixed-bottom bg-black text-white d-flex justify-content-end">
-          <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.quickSort}>Quick Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4" onClick={this.mergeSort}>Merge Sort</button>
-          <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.heapSort}>Heap Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4" onClick={this.bubbleSort}>Bubble Sort</button>
-          <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.selectionSort}>Selection Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4" onClick={this.insertionSort}>Insertion Sort</button>
-          <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.generateUnsortedArray}>Generate New Array</button>
+        <div className="fixed-bottom bg-black text-white d-sm-flex p-3 justify-content-end">
+          <button className="btn rounded-pill border border-info text-white my-auto " onClick={this.quickSort}>Quick Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-auto mx-3" onClick={this.mergeSort}>Merge Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-auto " onClick={this.heapSort}>Heap Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-auto mx-3" onClick={this.bubbleSort}>Bubble Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-auto " onClick={this.selectionSort}>Selection Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-auto mx-3" onClick={this.insertionSort}>Insertion Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-auto " onClick={this.generateUnsortedArray}>Generate New Array</button>
         </div>
       </div>
     )
@@ -95,7 +95,7 @@ export default class Sorter extends React.Component{
     // Heap sort
     for (let i = n - 1; i >= 0; i--) {
       await this.swapElementsInArray(0, i);
-      await this.timeout(50)
+      await this.timeout(this.state.speed)
 
       // Heapify root element to get highest element at root again
       await this.heapify(i, 0);
@@ -125,7 +125,7 @@ export default class Sorter extends React.Component{
          while (j >= 0 && this.state.array_unsorted[j] > key)
          {
              await this.setElementValue(j + 1, this.state.array_unsorted[j], "left");
-             await this.timeout(50)
+             await this.timeout(this.state.speed)
              j = j - 1;
          }
          await this.setElementValue(j + 1, key, "right");
@@ -147,7 +147,7 @@ export default class Sorter extends React.Component{
       /* swap the minimum element with the current element*/
       if (min !== i){
         await this.swapElementsInArray(min, i)
-        await this.timeout(50)
+        await this.timeout(this.state.speed)
       }
     }
   }
@@ -164,7 +164,7 @@ export default class Sorter extends React.Component{
 
           // Swap if greater is at the rear position
           await this.swapElementsInArray(i, i+1)
-          await this.timeout(50)
+          await this.timeout(this.state.speed)
           swapped = 1;
         }
       }
@@ -253,25 +253,25 @@ export default class Sorter extends React.Component{
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
             await this.setElementValue(k, L[i], "left");
-            await this.timeout(50);
+            await this.timeout(this.state.speed);
             i++;
         }
         else {
           await this.setElementValue(k, R[j], "right");
-          await this.timeout(50);
+          await this.timeout(this.state.speed);
             j++;
         }
         k++;
     }
     while (i < n1) {
       await this.setElementValue(k, L[i], "left");
-      await this.timeout(50);
+      await this.timeout(this.state.speed);
         i++;
         k++;
     }
     while (j < n2) {
       await this.setElementValue(k, R[j], "right");
-      await this.timeout(50);
+      await this.timeout(this.state.speed);
         j++;
         k++;
     }
@@ -292,7 +292,7 @@ export default class Sorter extends React.Component{
     // Swap and continue heapifying if root is not largest
     if (largest !== i) {
       await this.swapElementsInArray(i, largest);
-      await this.timeout(50)
+      await this.timeout(this.state.speed)
       await this.heapify( n, largest);
     }
   }

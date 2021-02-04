@@ -30,7 +30,8 @@ export default class Sorter extends React.Component{
         <div className="fixed-bottom bg-dark text-white d-flex justify-content-end">
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.quickSort}>Quick Sort</button>
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.bubbleSort}>Bubble Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.selectionSort}>Selection Sort</button>
+            <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.selectionSort}>Selection Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.insertionSort}>Insertion Sort</button>
           <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.generateUnsortedArray}>Generate New Array</button>
         </div>
       </div>
@@ -48,13 +49,30 @@ export default class Sorter extends React.Component{
       return { array_unsorted: arr}
     })
   }
+  setElementValue = (index, value, side) => {
+    this.setState(state => {
+      var arr = [];
+      arr = [...state.array_unsorted];
+      arr[index] = value;
+      var left = this.state.highlight_left;
+      var right = this.state.highlight_right;
+      if(side==="left"){
+        left = index;
+      }
+      else{
+        right = index;
+      }
+      //console.log("setting value", value)
+      return {array_unsorted: arr, highlight_left:left, highlight_right: right}
+    })
+  }
   swapElementsInArray = (left, right) => {
     this.setState(state => {
       var arr = [];
       var leftElement = state.array_unsorted[left];
       var rightElement = state.array_unsorted[right];
-      console.log("swapping"+left+"and"+right)
-      console.log("swapping"+leftElement+"and"+rightElement)
+      //console.log("swapping"+left+"and"+right)
+      //console.log("swapping"+leftElement+"and"+rightElement)
 
 
       arr = [...state.array_unsorted];
@@ -62,6 +80,28 @@ export default class Sorter extends React.Component{
       arr[right] = leftElement;
       return {array_unsorted: arr, highlight_left: left, highlight_right: right}
     })
+  }
+  //Function to perform the insertion sort Algorithm
+  insertionSort = async () => {
+    var size = this.state.length_array;
+     var i, key, j;
+     for (i = 1; i < size; i++)
+     {
+         key = this.state.array_unsorted[i];
+         j = i - 1;
+
+         /* Move elements of arr[0..i-1], that are
+         greater than key, to one position ahead
+         of their current position */
+         while (j >= 0 && this.state.array_unsorted[j] > key)
+         {
+             await this.setElementValue(j + 1, this.state.array_unsorted[j], "left");
+             await this.timeout(50)
+             j = j - 1;
+         }
+         await this.setElementValue(j + 1, key, "right");
+
+     }
   }
   //Function to perform the selection Sort Algorithm
   selectionSort = async () => {
@@ -104,7 +144,7 @@ export default class Sorter extends React.Component{
       if (swapped === 0)
         break;
     }
-}
+  }
   //Function performing quick Sort Algorithm
   quickSort = async (object, start = 0, end = 100000001) => {
     if (end === 100000001){

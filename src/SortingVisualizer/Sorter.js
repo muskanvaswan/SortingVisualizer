@@ -29,8 +29,9 @@ export default class Sorter extends React.Component{
         </div>
         <div className="fixed-bottom bg-dark text-white d-flex justify-content-end">
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.quickSort}>Quick Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.mergeSort}>Merge Sort</button>
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.bubbleSort}>Bubble Sort</button>
-            <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.selectionSort}>Selection Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.selectionSort}>Selection Sort</button>
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.insertionSort}>Insertion Sort</button>
           <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.generateUnsortedArray}>Generate New Array</button>
         </div>
@@ -62,7 +63,7 @@ export default class Sorter extends React.Component{
       else{
         right = index;
       }
-      //console.log("setting value", value)
+      console.log("setting value", value)
       return {array_unsorted: arr, highlight_left:left, highlight_right: right}
     })
   }
@@ -80,6 +81,16 @@ export default class Sorter extends React.Component{
       arr[right] = leftElement;
       return {array_unsorted: arr, highlight_left: left, highlight_right: right}
     })
+  }
+  mergeSort = async (object, l = 0, r =  this.state.length_array - 1) => {
+    if(l >= r){
+        return;//returns recursively
+    }
+    console.log(l, m)
+    var m = l+ parseInt((r-l)/2);
+    await this.mergeSort(4, l,m);
+    await this.mergeSort(4, m+1,r);
+    await this.merge(l,m,r);
   }
   //Function to perform the insertion sort Algorithm
   insertionSort = async () => {
@@ -206,6 +217,63 @@ export default class Sorter extends React.Component{
     return a
   }
 
+  merge = async ( l, m, r) => {
+
+    var n1 = m - l + 1;
+    var n2 = r - m;
+
+    // Create temp arrays
+    var L = [], R = [];
+
+    // Copy data to temp arrays L[] and R[]
+    for (let i = 0; i < n1; i++)
+        L[i] = this.state.array_unsorted[l + i];
+    for (let j = 0; j < n2; j++)
+        R[j] = this.state.array_unsorted[m + 1 + j];
+
+    // Merge the temp arrays back into arr[l..r]
+
+    // Initial index of first subarray
+    var i = 0;
+
+    // Initial index of second subarray
+    var j = 0;
+
+    // Initial index of merged subarray
+    var k = l;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            await this.setElementValue(k, L[i], "left");
+            await this.timeout(50);
+            i++;
+        }
+        else {
+          await this.setElementValue(k, R[j], "right");
+          await this.timeout(50);
+            j++;
+        }
+        k++;
+    }
+
+    // Copy the remaining elements of
+    // L[], if there are any
+    while (i < n1) {
+      await this.setElementValue(k, L[i], "left");
+      await this.timeout(50);
+        i++;
+        k++;
+    }
+
+    // Copy the remaining elements of
+    // R[], if there are any
+    while (j < n2) {
+      await this.setElementValue(k, R[j], "right");
+      await this.timeout(50);
+        j++;
+        k++;
+    }
+  }
   timeout(delay: number) {
     return new Promise( res => setTimeout(res, delay) );
   }

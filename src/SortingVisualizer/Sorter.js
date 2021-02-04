@@ -12,6 +12,11 @@ export default class Sorter extends React.Component{
      "highlight_left": 0,
      "highlight_right": 0,
      "speed": 50,
+     "sorting": false,
+     "wctc": "",
+     "bctc": "",
+     "actc": "",
+     "sc": "",
      "status_text": "Choose any of the sorticing algorithms before to start visualizing!"
     };
   }
@@ -32,15 +37,40 @@ export default class Sorter extends React.Component{
             <input type="number" className="form-control" name="range" onChange={this.handleRangeChange} value={this.state.range[1]}></input>
           </div>
           <div className="text-white my-3">
-            <h4 className="my-4">{this.state.status_text}</h4>
+            <p className="my-4">{this.state.status_text}</p>
           </div>
+          { this.state.sorting ?
+            <div >
+              <table>
+              <tbody>
+                <tr>
+                  <td>Worst Case Time Complexity</td>
+                  <td>{this.state.wctc}</td>
+                </tr>
+                <tr>
+                  <td>Best Case Time Complexity</td>
+                  <td>{this.state.bctc}</td>
+                </tr>
+                <tr>
+                  <td>Average Time Complexity</td>
+                  <td>{this.state.actc}</td>
+                </tr>
+                <tr>
+                  <td>Space Complexity</td>
+                  <td>{this.state.sc}</td>
+                </tr>
+              </tbody>
+              </table>
+
+            </div> : "" }
+
         </div>
         <div className="mt-5 mr-2">
           {this.state.array_unsorted.map((val, i)=> {
             return (
           <div className={"bar my-1 " + ( (i === this.state.highlight_left || i === this.state.highlight_right) ? 'highlight-bar-1' : 'hidden')}
             style={{width: String(parseInt(100*val/(this.state.range[1]-this.state.range[0])))+"%", padding: parseInt(200/this.state.length_array)}}
-            key={i}>
+            key={i}>{this.state.length_array <25? val: ""}
           </div>)
           })}
         </div>
@@ -68,6 +98,8 @@ export default class Sorter extends React.Component{
     this.generateUnsortedArray()
   }
   generateUnsortedArray = () => {
+    this.setState({status_text: "Choose any of the sorticing algorithms before to start visualizing!", sorting: false})
+
     this.setState(state => {
       var arr = []
       for (var i = 0; i < state.length_array; i++){
@@ -111,7 +143,12 @@ export default class Sorter extends React.Component{
 
   // main function to do heap sort
   heapSort = async (object, n = this.state.length_array) => {
-    await this.setState({status_text: "Current Visualizing: Heap Sort"})
+    await this.setState({status_text: "Current Visualizing: Heap Sort",
+      sorting: true,
+      wctc: "O(nlogn)",
+      bctc: "O(nlogn)",
+      actc: "O(nlogn)",
+      sc: "O(1) auxillary"})
     //console.log(n)
     // Build max heap
     for (let i = parseInt(n/2) - 1; i >= 0; i--){
@@ -129,7 +166,12 @@ export default class Sorter extends React.Component{
     }
   }
   mergeSort = async (object, l = 0, r =  this.state.length_array - 1) => {
-    await this.setState({status_text: "Current Visualizing: Merge Sort"})
+    await this.setState({status_text: "Current Visualizing: Merge Sort",
+      sorting: true,
+      wctc: "O(nlogn)",
+      bctc: "O(nlogn)",
+      actc: "O(nlogn)",
+      sc: "O(1) auxillary"})
 
     if(l >= r){
         return;//returns recursively
@@ -141,6 +183,12 @@ export default class Sorter extends React.Component{
   }
   //Function to perform the insertion sort Algorithm
   insertionSort = async () => {
+    await this.setState({status_text: "Current Visualizing: Insertion Sort",
+      sorting: true,
+      wctc: "O(n sq.)",
+      bctc: "O(n)",
+      actc: "O(n sq.)",
+      sc: "O(n) auxillary"})
     var size = this.state.length_array;
      var i, key, j;
      for (i = 1; i < size; i++)
@@ -163,6 +211,13 @@ export default class Sorter extends React.Component{
   }
   //Function to perform the selection Sort Algorithm
   selectionSort = async () => {
+    await this.setState({status_text: "Current Visualizing: Selection Sort",
+      sorting: true,
+      wctc: "O(n sq.)",
+      bctc: "O(n sq.)",
+      actc: "O(n sq.)",
+      sc: "O(n) auxillary"})
+
     var size = this.state.length_array;
 
     for (var i = 0; i < size; i++){
@@ -182,6 +237,13 @@ export default class Sorter extends React.Component{
   }
   //Function for performing the bubble sort algorith
   bubbleSort = async () => {
+    await this.setState({status_text: "Current Visualizing: Bubble Sort",
+      sorting: true,
+      wctc: "O(n sq.)",
+      bctc: "O(n sq.)",
+      actc: "O(n sq.)",
+      sc: "O(1) auxillary"})
+
     var size = this.state.length_array
     for (var step = 0; step < size - 1; ++step) {
       // Run loops two times: one for walking throught the array
@@ -205,6 +267,13 @@ export default class Sorter extends React.Component{
   }
   //Function performing quick Sort Algorithm
   quickSort = async (object, start = 0, end = 100000001) => {
+    await this.setState({status_text: "Current Visualizing: Quick Sort",
+      sorting: true,
+      wctc: "O(n sq.)",
+      bctc: "O(nlogn)",
+      actc: "O(nlogn)",
+      sc: "O(n) auxillary"})
+
     if (end === 100000001){
       end = this.state.array_unsorted.length -1;
     }

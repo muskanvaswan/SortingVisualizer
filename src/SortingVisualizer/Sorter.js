@@ -12,16 +12,34 @@ export default class Sorter extends React.Component{
      "highlight_left": 0,
      "highlight_right": 0,
      "speed": 50,
+     "status_text": "Choose any of the sorticing algorithms before to start visualizing!"
     };
   }
   render(){
     return (
       <div>
+        <div className="fixed-side bg-dark p-4">
+          <div className="form-group text-white my-3">
+            <label className="mb-2">Speed (in milliseconds):</label>
+            <input type="number" className="form-control" name="speed" onChange={this.handleInputChange} value={this.state.speed}></input>
+          </div>
+          <div className="form-group text-white my-3">
+            <label className="mb-2">Length of array:</label>
+            <input type="number" className="form-control" name="length_array" onChange={this.handleInputChange} value={this.state.length_array}></input>
+          </div>
+          <div className="form-group text-white my-3">
+            <label className="mb-2">Range of Elemets</label>
+            <input type="number" className="form-control" name="range" onChange={this.handleRangeChange} value={this.state.range[1]}></input>
+          </div>
+          <div className="text-white my-3">
+            <h4 className="my-4">{this.state.status_text}</h4>
+          </div>
+        </div>
         <div className="mt-5 mr-2">
           {this.state.array_unsorted.map((val, i)=> {
             return (
           <div className={"bar my-1 " + ( (i === this.state.highlight_left || i === this.state.highlight_right) ? 'highlight-bar-1' : 'hidden')}
-            style={{width: String(parseInt(100*val/(this.state.range[1]-this.state.range[0])))+"%", padding: String(parseInt(230/this.state.length_array))+"px"}}
+            style={{width: String(parseInt(100*val/(this.state.range[1]-this.state.range[0])))+"%", padding: parseInt(200/this.state.length_array)}}
             key={i}>
           </div>)
           })}
@@ -40,6 +58,14 @@ export default class Sorter extends React.Component{
   }
   componentDidMount = () =>{
     this.generateUnsortedArray();
+  }
+  handleInputChange = (element) =>{
+    this.setState({[element.target.name]: element.target.value})
+    this.generateUnsortedArray()
+  }
+  handleRangeChange = (element) =>{
+    this.setState({range: [ 10, element.target.value]})
+    this.generateUnsortedArray()
   }
   generateUnsortedArray = () => {
     this.setState(state => {
@@ -84,7 +110,8 @@ export default class Sorter extends React.Component{
   }
 
   // main function to do heap sort
-  heapSort = async (object, n = this.state.length_array - 1) => {
+  heapSort = async (object, n = this.state.length_array) => {
+    await this.setState({status_text: "Current Visualizing: Heap Sort"})
     //console.log(n)
     // Build max heap
     for (let i = parseInt(n/2) - 1; i >= 0; i--){
@@ -102,6 +129,8 @@ export default class Sorter extends React.Component{
     }
   }
   mergeSort = async (object, l = 0, r =  this.state.length_array - 1) => {
+    await this.setState({status_text: "Current Visualizing: Merge Sort"})
+
     if(l >= r){
         return;//returns recursively
     }

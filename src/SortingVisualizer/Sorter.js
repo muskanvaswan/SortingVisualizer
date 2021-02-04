@@ -8,19 +8,29 @@ export default class Sorter extends React.Component{
     this.state = {
      "array_unsorted": [76, 46, 77, 88, 30, 18, 14, 20, 13, 26],
      "range": [10, 1000],
-     "length_array": 20,
+     "length_array": 40,
      "highlight_left": 0,
-     "highlight_right": 0
+     "highlight_right": 0,
+     "speed": 300,
+     "thickness": 2
     };
   }
   render(){
     return (
       <div>
-        {this.state.array_unsorted.map((val, i)=> {
-          return (<div className={"bar my-1 " + ( (i === this.state.highlight_left || i === this.state.highlight_right) ? 'highlight-bar-1' : 'hidden')} style={{width: val}} key={i}>{val}</div>)
-        })}
-        <button className="btn rounded-pill btn-info m-4" onClick={this.quickSort}>Quick Sort</button>
-        <button className="btn rounded-pill btn-info m-4" onClick={this.generateUnsortedArray}>Generate New Array</button>
+        <div className="mt-5">
+          {this.state.array_unsorted.map((val, i)=> {
+            return (
+          <div className={"bar my-1 " + ( (i === this.state.highlight_left || i === this.state.highlight_right) ? 'highlight-bar-1' : 'hidden')}
+            style={{width: val, padding: String(parseInt(230/this.state.length_array))+"px"}}
+            key={i}>
+          </div>)
+          })}
+        </div>
+        <div className="fixed-bottom bg-dark text-white d-flex justify-content-end">
+          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.quickSort}>Quick Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.generateUnsortedArray}>Generate New Array</button>
+        </div>
       </div>
     )
   }
@@ -50,7 +60,7 @@ export default class Sorter extends React.Component{
 
       if (leftPointer !== rightPointer){
         await this.swapElementsInArray(leftPointer, rightPointer);
-        await this.timeout(500)
+        await this.timeout(this.state.speed)
         if (rightPointer - leftPointer>1){
           leftPointer++;
           rightPointer--;

@@ -1,7 +1,10 @@
+body{
+  background-color: rgba(51, 19, 102, 1)
+}
 .bar{
   /*   display: block;  */
   padding: 10;
-  background-color: rgba(29, 215, 188, 1);
+  background-color: rgba(255, 248, 82, 1);
 }
 .highlight-bar-1{
   background-color: red;

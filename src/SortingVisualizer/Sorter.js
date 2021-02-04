@@ -100,12 +100,12 @@ export default class Sorter extends React.Component{
 
     }
     else{
-      this.setState(state => { return {status_text: state.status_text+"Please keep minimum range at 700."}})
+      //this.setState(state => { return {status_text: state.status_text+"Please keep minimum range at 700."}})
 
     }
   }
   generateUnsortedArray = () => {
-    this.setState({status_text: "Choose any of the sorticing algorithms before to start visualizing!", sorting: false})
+    this.setState({status_text: "Choose any of the sorticing algorithms before to start visualizing! ", sorting: false})
 
     this.setState(state => {
       var arr = []

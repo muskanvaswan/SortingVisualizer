@@ -8,10 +8,10 @@ export default class Sorter extends React.Component{
     this.state = {
      "array_unsorted": [76, 46, 77, 88, 30, 18, 14, 20, 13, 26],
      "range": [10, 1000],
-     "length_array": 40,
+     "length_array": 80,
      "highlight_left": 0,
      "highlight_right": 0,
-     "speed": 300,
+     "speed": 50,
      "thickness": 2
     };
   }
@@ -30,6 +30,7 @@ export default class Sorter extends React.Component{
         <div className="fixed-bottom bg-dark text-white d-flex justify-content-end">
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.quickSort}>Quick Sort</button>
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.bubbleSort}>Bubble Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.selectionSort}>Selection Sort</button>
           <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.generateUnsortedArray}>Generate New Array</button>
         </div>
       </div>
@@ -62,6 +63,25 @@ export default class Sorter extends React.Component{
       return {array_unsorted: arr, highlight_left: left, highlight_right: right}
     })
   }
+  //Function to perform the selection Sort Algorithm
+  selectionSort = async () => {
+    var size = this.state.length_array;
+
+    for (var i = 0; i < size; i++){
+      var min = i;
+      /* check the element to be minimum */
+      for (var j = i+1; j < size; j++) {
+        if (this.state.array_unsorted[j] < this.state.array_unsorted[min]){
+            min = j;
+        }
+      }
+      /* swap the minimum element with the current element*/
+      if (min !== i){
+        await this.swapElementsInArray(min, i)
+        await this.timeout(50)
+      }
+    }
+  }
   //Function for performing the bubble sort algorith
   bubbleSort = async () => {
     var size = this.state.length_array
@@ -81,7 +101,7 @@ export default class Sorter extends React.Component{
       }
 
       // If there is not swapping in the last swap, then the array is already sorted.
-      if (swapped == 0)
+      if (swapped === 0)
         break;
     }
 }

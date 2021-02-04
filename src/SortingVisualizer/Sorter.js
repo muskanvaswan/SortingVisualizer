@@ -23,7 +23,7 @@ export default class Sorter extends React.Component{
   render(){
     return (
       <div>
-        <div className="fixed-side bg-dark p-4">
+        <div className="fixed-side d-none d-sm-block bg-dark p-4">
           <div className="form-group text-white my-3">
             <label className="mb-2">Speed (in milliseconds):</label>
             <input type="number" className="form-control" name="speed" onChange={this.handleInputChange} value={this.state.speed}></input>

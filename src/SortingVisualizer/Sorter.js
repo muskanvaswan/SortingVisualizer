@@ -8,32 +8,31 @@ export default class Sorter extends React.Component{
     this.state = {
      "array_unsorted": [76, 46, 77, 88, 30, 18, 14, 20, 13, 26],
      "range": [10, 1000],
-     "length_array": 80,
+     "length_array": 60,
      "highlight_left": 0,
      "highlight_right": 0,
      "speed": 50,
-     "thickness": 2
     };
   }
   render(){
     return (
       <div>
-        <div className="mt-5">
+        <div className="mt-5 mr-2">
           {this.state.array_unsorted.map((val, i)=> {
             return (
           <div className={"bar my-1 " + ( (i === this.state.highlight_left || i === this.state.highlight_right) ? 'highlight-bar-1' : 'hidden')}
-            style={{width: val, padding: String(parseInt(230/this.state.length_array))+"px"}}
+            style={{width: String(parseInt(100*val/(this.state.range[1]-this.state.range[0])))+"%", padding: String(parseInt(230/this.state.length_array))+"px"}}
             key={i}>
           </div>)
           })}
         </div>
-        <div className="fixed-bottom bg-dark text-white d-flex justify-content-end">
-          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.quickSort}>Quick Sort</button>
-            <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.mergeSort}>Merge Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.heapSort}>Heap Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.bubbleSort}>Bubble Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.selectionSort}>Selection Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.insertionSort}>Insertion Sort</button>
+        <div className="fixed-bottom bg-black text-white d-flex justify-content-end">
+          <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.quickSort}>Quick Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4" onClick={this.mergeSort}>Merge Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.heapSort}>Heap Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4" onClick={this.bubbleSort}>Bubble Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.selectionSort}>Selection Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4" onClick={this.insertionSort}>Insertion Sort</button>
           <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.generateUnsortedArray}>Generate New Array</button>
         </div>
       </div>
@@ -236,30 +235,20 @@ export default class Sorter extends React.Component{
     return a
   }
 
-  merge = async ( l, m, r) => {
+  //Helper Function for mergeSort
+  merge = async (left, mid, right) => {
 
-    var n1 = m - l + 1;
-    var n2 = r - m;
-
-    // Create temp arrays
+    var n1 = mid - left + 1;
+    var n2 = right - mid;
     var L = [], R = [];
-
-    // Copy data to temp arrays L[] and R[]
     for (let i = 0; i < n1; i++)
-        L[i] = this.state.array_unsorted[l + i];
+        L[i] = this.state.array_unsorted[left + i];
     for (let j = 0; j < n2; j++)
-        R[j] = this.state.array_unsorted[m + 1 + j];
+        R[j] = this.state.array_unsorted[mid + 1 + j];
 
-    // Merge the temp arrays back into arr[l..r]
-
-    // Initial index of first subarray
     var i = 0;
-
-    // Initial index of second subarray
     var j = 0;
-
-    // Initial index of merged subarray
-    var k = l;
+    var k = left;
 
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
@@ -274,18 +263,12 @@ export default class Sorter extends React.Component{
         }
         k++;
     }
-
-    // Copy the remaining elements of
-    // L[], if there are any
     while (i < n1) {
       await this.setElementValue(k, L[i], "left");
       await this.timeout(50);
         i++;
         k++;
     }
-
-    // Copy the remaining elements of
-    // R[], if there are any
     while (j < n2) {
       await this.setElementValue(k, R[j], "right");
       await this.timeout(50);
@@ -294,9 +277,8 @@ export default class Sorter extends React.Component{
     }
   }
 
+  //Helper function for heapSort
   heapify = async (n, i) => {
-    //console.log('here')
-    // Find largest among root, left child and right child
     var largest = i;
     var left = 2 * i + 1;
     var right = 2 * i + 2;
@@ -314,7 +296,6 @@ export default class Sorter extends React.Component{
       await this.heapify( n, largest);
     }
   }
-
   timeout(delay: number) {
     return new Promise( res => setTimeout(res, delay) );
   }

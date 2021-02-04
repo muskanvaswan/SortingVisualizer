@@ -1,6 +1,7 @@
 body{
   background-color: rgba(51, 19, 102, 1)
 }
+
 .bar{
   /*   display: block;  */
   padding: 10;
@@ -15,6 +16,9 @@ body{
 .bg-black{
   background-color: black;
 }
+.bg-dark{
+  background-color: rgba(27, 8, 48, 1) !important;
+}
 .fixed-side {
   height: 100%;
   width: 19%;
@@ -24,4 +28,10 @@ body{
   right: 0;
   overflow-x: hidden;
   padding-top: 20px;
+}
+tr, td{
+  color: white;
+  padding: 2%;
+  border-color: rgba(161, 251, 167, 1);
+  border-width: 1px;
 }

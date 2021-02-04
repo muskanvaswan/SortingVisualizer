@@ -34,7 +34,7 @@ export default class Sorter extends React.Component{
           </div>
           <div className="form-group text-white my-3">
             <label className="mb-2">Range of Elemets</label>
-            <input type="number" className="form-control" name="range" onChange={this.handleRangeChange} value={this.state.range[1]}></input>
+            <input type="number" className="form-control" name="range" min="650" onChange={this.handleRangeChange} value={this.state.range[1]}></input>
           </div>
           <div className="text-white my-3">
             <p className="my-4">{this.state.status_text}</p>
@@ -94,8 +94,15 @@ export default class Sorter extends React.Component{
     this.generateUnsortedArray()
   }
   handleRangeChange = (element) =>{
-    this.setState({range: [ 10, element.target.value]})
-    this.generateUnsortedArray()
+    if (element.target.value > 700){
+      this.setState({range: [ 10, element.target.value]})
+      this.generateUnsortedArray()
+
+    }
+    else{
+      this.setState(state => { return {status_text: state.status_text+"Please keep minimum range at 700."}})
+
+    }
   }
   generateUnsortedArray = () => {
     this.setState({status_text: "Choose any of the sorticing algorithms before to start visualizing!", sorting: false})

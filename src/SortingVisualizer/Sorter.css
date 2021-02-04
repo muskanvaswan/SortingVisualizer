@@ -10,8 +10,18 @@ body{
   background-color: red;
 }
 .mr-2{
-  margin-right: 20%;
+  margin-right: 25%;
 }
 .bg-black{
   background-color: black;
+}
+.fixed-side {
+  height: 100%;
+  width: 19%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
 }

@@ -29,6 +29,7 @@ export default class Sorter extends React.Component{
         </div>
         <div className="fixed-bottom bg-dark text-white d-flex justify-content-end">
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.quickSort}>Quick Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.bubbleSort}>Bubble Sort</button>
           <button className="btn rounded-pill border border-info text-white my-4 " onClick={this.generateUnsortedArray}>Generate New Array</button>
         </div>
       </div>
@@ -37,6 +38,54 @@ export default class Sorter extends React.Component{
   componentDidMount = () =>{
     this.generateUnsortedArray();
   }
+  generateUnsortedArray = () => {
+    this.setState(state => {
+      var arr = []
+      for (var i = 0; i < state.length_array; i++){
+        arr.push(this.getRndInteger(state.range[0], state.range[1]))
+      }
+      return { array_unsorted: arr}
+    })
+  }
+  swapElementsInArray = (left, right) => {
+    this.setState(state => {
+      var arr = [];
+      var leftElement = state.array_unsorted[left];
+      var rightElement = state.array_unsorted[right];
+      console.log("swapping"+left+"and"+right)
+      console.log("swapping"+leftElement+"and"+rightElement)
+
+
+      arr = [...state.array_unsorted];
+      arr[left] = rightElement;
+      arr[right] = leftElement;
+      return {array_unsorted: arr, highlight_left: left, highlight_right: right}
+    })
+  }
+  //Function for performing the bubble sort algorith
+  bubbleSort = async () => {
+    var size = this.state.length_array
+    for (var step = 0; step < size - 1; ++step) {
+      // Run loops two times: one for walking throught the array
+      // and the other for comparison
+      var swapped = 0;
+      for (var i = 0; i < size - step - 1; ++i) {
+        // To sort in descending order, change > to < in this line.
+        if (this.state.array_unsorted[i] > this.state.array_unsorted[i + 1]) {
+
+          // Swap if greater is at the rear position
+          await this.swapElementsInArray(i, i+1)
+          await this.timeout(50)
+          swapped = 1;
+        }
+      }
+
+      // If there is not swapping in the last swap, then the array is already sorted.
+      if (swapped == 0)
+        break;
+    }
+}
+  //Function performing quick Sort Algorithm
   quickSort = async (object, start = 0, end = 100000001) => {
     if (end === 100000001){
       end = this.state.array_unsorted.length -1;
@@ -97,34 +146,10 @@ export default class Sorter extends React.Component{
     return a
   }
 
-  swapElementsInArray = (left, right) => {
-    this.setState(state => {
-      var arr = [];
-      var leftElement = state.array_unsorted[left];
-      var rightElement = state.array_unsorted[right];
-      console.log("swapping"+left+"and"+right)
-      console.log("swapping"+leftElement+"and"+rightElement)
-
-
-      arr = [...state.array_unsorted];
-      arr[left] = rightElement;
-      arr[right] = leftElement;
-      return {array_unsorted: arr, highlight_left: left, highlight_right: right}
-    })
-  }
-
   timeout(delay: number) {
     return new Promise( res => setTimeout(res, delay) );
   }
-  generateUnsortedArray = () => {
-    this.setState(state => {
-      var arr = []
-      for (var i = 0; i < state.length_array; i++){
-        arr.push(this.getRndInteger(state.range[0], state.range[1]))
-      }
-      return { array_unsorted: arr}
-    })
-  }
+
   getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
   }

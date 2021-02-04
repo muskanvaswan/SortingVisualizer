@@ -29,7 +29,8 @@ export default class Sorter extends React.Component{
         </div>
         <div className="fixed-bottom bg-dark text-white d-flex justify-content-end">
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.quickSort}>Quick Sort</button>
-          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.mergeSort}>Merge Sort</button>
+            <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.mergeSort}>Merge Sort</button>
+          <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.heapSort}>Heap Sort</button>
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.bubbleSort}>Bubble Sort</button>
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.selectionSort}>Selection Sort</button>
           <button className="btn rounded-pill border border-info text-white m-4 " onClick={this.insertionSort}>Insertion Sort</button>
@@ -82,11 +83,29 @@ export default class Sorter extends React.Component{
       return {array_unsorted: arr, highlight_left: left, highlight_right: right}
     })
   }
+
+  // main function to do heap sort
+  heapSort = async (object, n = this.state.length_array - 1) => {
+    //console.log(n)
+    // Build max heap
+    for (let i = parseInt(n/2) - 1; i >= 0; i--){
+      await this.heapify(n, i);
+      //console.log(n, i)
+    }
+
+    // Heap sort
+    for (let i = n - 1; i >= 0; i--) {
+      await this.swapElementsInArray(0, i);
+      await this.timeout(50)
+
+      // Heapify root element to get highest element at root again
+      await this.heapify(i, 0);
+    }
+  }
   mergeSort = async (object, l = 0, r =  this.state.length_array - 1) => {
     if(l >= r){
         return;//returns recursively
     }
-    console.log(l, m)
     var m = l+ parseInt((r-l)/2);
     await this.mergeSort(4, l,m);
     await this.mergeSort(4, m+1,r);
@@ -274,6 +293,28 @@ export default class Sorter extends React.Component{
         k++;
     }
   }
+
+  heapify = async (n, i) => {
+    //console.log('here')
+    // Find largest among root, left child and right child
+    var largest = i;
+    var left = 2 * i + 1;
+    var right = 2 * i + 2;
+
+    if (left < n && this.state.array_unsorted[left] > this.state.array_unsorted[largest])
+      largest = left;
+
+    if (right < n && this.state.array_unsorted[right] > this.state.array_unsorted[largest])
+      largest = right;
+
+    // Swap and continue heapifying if root is not largest
+    if (largest !== i) {
+      await this.swapElementsInArray(i, largest);
+      await this.timeout(50)
+      await this.heapify( n, largest);
+    }
+  }
+
   timeout(delay: number) {
     return new Promise( res => setTimeout(res, delay) );
   }

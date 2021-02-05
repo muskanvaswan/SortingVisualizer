@@ -17,7 +17,8 @@ export default class Sorter extends React.Component{
      "bctc": "",
      "actc": "",
      "sc": "",
-     "status_text": "Choose any of the sorticing algorithms before to start visualizing!"
+     "status_text": "Choose any of the sorticing algorithms before to start visualizing!",
+     "userFunction": ""
     };
   }
   render(){
@@ -35,6 +36,10 @@ export default class Sorter extends React.Component{
           <div className="form-group text-white my-3">
             <label className="mb-2">Range of Elemets</label>
             <input type="number" className="form-control" name="range" min="650" onChange={this.handleRangeChange} value={this.state.range[1]}></input>
+          </div>
+          <div className="form-group text-white d-none my-3">
+            <label className="mb-2">Range of Elemets</label>
+            <textarea rows="8" type="hidden" className="form-control" name="userFunction" min="650" onChange={this.handleInputChange} value={this.state.userFunction}></textarea>
           </div>
           <div className="text-white my-3">
             <p className="my-4">{this.state.status_text}</p>
@@ -68,7 +73,7 @@ export default class Sorter extends React.Component{
         <div className="mt-5 mr-2">
           {this.state.array_unsorted.map((val, i)=> {
             return (
-          <div className={"bar my-1 " + ( (i === this.state.highlight_left || i === this.state.highlight_right) ? 'highlight-bar-1' : 'hidden')}
+          <div className={"bar my-1 " + ( i === this.state.highlight_left ? 'highlight-bar-1' : '') + ( i === this.state.highlight_right ? 'highlight-bar-2' : '')}
             style={{width: String(parseInt(100*val/(this.state.range[1]-this.state.range[0])))+"%", padding: parseInt(200/this.state.length_array)}}
             key={i}>{this.state.length_array <25? val: ""}
           </div>)
@@ -81,6 +86,7 @@ export default class Sorter extends React.Component{
           <button className="btn rounded-pill border border-info text-white my-auto mx-3" onClick={this.bubbleSort}>Bubble Sort</button>
           <button className="btn rounded-pill border border-info text-white my-auto " onClick={this.selectionSort}>Selection Sort</button>
           <button className="btn rounded-pill border border-info text-white my-auto mx-3" onClick={this.insertionSort}>Insertion Sort</button>
+          <button className="btn rounded-pill border border-info text-white my-auto mx-3 d-none" onClick={this.userDefinedFunction}>Execute</button>
           <button className="btn rounded-pill border border-info text-white my-auto " onClick={this.generateUnsortedArray}>Generate New Array</button>
         </div>
       </div>
@@ -104,6 +110,8 @@ export default class Sorter extends React.Component{
 
     }
   }
+   // eslint-disable-next-line
+  userDefinedFunction = async () => {eval("(async func() {" + this.state.userFunction + "})")}
   generateUnsortedArray = () => {
     this.setState({status_text: "Choose any of the sorticing algorithms before to start visualizing! ", sorting: false})
 
@@ -133,7 +141,7 @@ export default class Sorter extends React.Component{
     })
   }
   swapElementsInArray = (left, right) => {
-    this.setState(state => {
+      this.setState(state => {
       var arr = [];
       var leftElement = state.array_unsorted[left];
       var rightElement = state.array_unsorted[right];

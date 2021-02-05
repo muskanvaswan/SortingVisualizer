@@ -10,6 +10,9 @@ body{
 .highlight-bar-1{
   background-color: red;
 }
+.highlight-bar-2{
+  background-color: rgba(247, 58, 228, 1);
+}
 .mr-2{
   margin-right: 25%;
 }
